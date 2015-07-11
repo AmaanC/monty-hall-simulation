@@ -3,19 +3,19 @@
 
 import random
 
-total_doors = 10
-num_doors_opened = 8 # How many doors does Monty open?
-trials = 10000
+total_doors = 3
+num_doors_opened = 1 # How many doors does Monty open?
+trials = 100000
 
 got_car = 0
 got_goat = 0
 door_list = list(range(1, total_doors + 1))
 
 def pick_door():
-    return random.randint(1, 3)
+    return random.randint(1, total_doors)
 
 def place_car():
-    return random.randint(1, 3)
+    return random.randint(1, total_doors)
 
 def show_goat(car, chosen_door):
     doors = door_list[:]
@@ -25,6 +25,7 @@ def show_goat(car, chosen_door):
         doors.remove(chosen_door)
     return random.sample(doors, num_doors_opened)
 
+# args is the doors that have been opened by Monty or that the player chose. Get the other closed doors
 def get_closed_doors(*args):
     doors = door_list[:]
     for arg in args:
@@ -47,14 +48,12 @@ def run_test():
     else:
         got_goat += 1
 
-    # print('Got car: {}\nGot goat: {}'.format(got_car, got_goat))
-
 def main():
     for _ in range(trials):
         run_test()
     print(
-        ('Monty shows you {} goats out of {} doors.\n'
-        'Odds of getting the car is {}. Found running {} trials')
+        ('Monty shows you {} goat(s) out of {} doors.\n'
+        'Odds of getting the car if you always switch are {}. Found running {} trials')
         .format(num_doors_opened, total_doors, got_car / (got_car + got_goat), trials)
     )
 
